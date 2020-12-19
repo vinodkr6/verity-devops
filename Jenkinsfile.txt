@@ -1,9 +1,46 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@vinodkr6 
+Learn Git and GitHub without any code!
+Using the Hello World guide, you’ll start a branch, write comments, and open a pull request.
+
+
+vinodkr6
+/
+verity-devops
+forked from umangsaltuniv/verity-devops
+0
+0182
+Code
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+verity-devops/Reference/Jenkinsfile.txt
+@umangsaltuniv
+umangsaltuniv CodeCommit1.0
+Latest commit b0c019f on Oct 21
+ History
+ 1 contributor
+104 lines (77 sloc)  2.2 KB
+  
 pipeline {
     agent any
     stages {
 		
 		
 		// ******ALL CODE TO BE ADDED BELOW THIS COMMENT******
+		
+			
 		//Code starts for stage Clean
         stage('Clean') {
             steps {
@@ -11,21 +48,28 @@ pipeline {
             }
         }
 		//Code ends for stage Clean
-	//Code starts for stage PMD
-	//	stage('PMD') {
-          //  steps {
-            //    sh 'mvn site'
-          //  }
+		
+		
+	
+		//Code starts for stage PMD
+		//stage('PMD') {
+            //steps {
+              //  sh 'mvn site'
+           // }
         //}
-		//Code ends for stage PMD	
-	//Code starts for stage Compile
+		//Code ends for stage PMD
+		
+		
+		
+		//Code starts for stage Compile
 		stage('Compile') {
             steps {
                 sh 'mvn compile'
             }
         }
-		//Code Ends for stage Compile		
+		//Code Ends for stage Compile
 		
+				
 		//Code starts for stage Unit Test
         stage('Unit Test') {
             steps {
@@ -39,6 +83,8 @@ pipeline {
         }
 		//Code ends for stage Unit Test
 		
+		
+		
 		//Code starts for stage JaCoCo
 		stage('JaCoCo') {
             steps {
@@ -47,6 +93,59 @@ pipeline {
         }
 		//Code ends for stage JaCoCo
 		
+		
+		
+		//Code starts for stage Install
+		stage('Install') {
+            steps {
+                sh 'mvn install -DskipTests'
+            }
+        }
+		//Code ends for stage Install
+		
+		
+		//Code starts for stage Launch Tomcat Server
+		stage('Launch Tomcat Server') {
+            steps {
+                sh '/tmp/apache-tomcat-9.0.20/bin/startup.sh'
+            }
+        }
+		//Code ends for stage Launch Tomcat Server
+		
+		
+		
+		//Code starts for stage Deploy War on Tomcat Server
+		stage('Deploy War on Tomcat Server') {
+            steps {
+                sh 'cp /var/jenkins_home/workspace/verity-devops/target/ExpenseApp-1.war /tmp/apache-tomcat-9.0.20/webapps'
+            }
+        }
+		//Code ends for stage Deploy War on Tomcat Server
+		
+		
+		
+		//Code starts for stage System Test
+		stage('System Test') {
+            steps {
+				//Change git url below as per your forked github repository URL
+				git url: 'https://github.com/umangsaltuniv/EMSystemTests.git'
+            	sh 'mvn -Dtest=ExpenseManagerSystemTest test'
+            }
+        }
+		//Code ends for stage System Test
+		
 		// ******ALL CODE TO BE ADDED ABOVE THIS COMMENT******
     }
 }
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
